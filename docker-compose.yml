@@ -1,0 +1,44 @@
+services:
+  nginx:
+    depends_on:
+      - api
+      - client
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "3050:80"
+  api:
+    ports:
+    - "3001:3001"
+    build:
+      dockerfile: Dockerfile
+      context: "./server"
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    environment:
+      DB_HOST: video-hosting-dev-database.ciaqkr7qzcff.us-east-1.rds.amazonaws.com
+      DB_PORT: 5432
+      DB_USER: salesmeetings
+      DB_PASSWORD: salesmeetings12345
+      DB_NAME: postgres
+
+  client:
+    ports:
+    - "3000:3000"
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_SERVER_URL=/api
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+networks: 
+  mynetwork: 
+    driver: bridge
+

@@ -1,0 +1,141 @@
+.videoControlsContainer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: white;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 150ms ease-in-out;
+  pointer-events: none;
+}
+
+.isVisible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.videoControlsContainer::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+  width: 100%;
+  aspect-ratio: 6 / 1;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.videoControlsContainer .controls {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.25rem;
+  align-items: center;
+}
+
+.videoControlsContainer .controls button {
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0;
+  height: 30px;
+  width: 30px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 150ms ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & svg {
+    vertical-align: middle;
+  }
+}
+
+.videoControlsContainer .controls button:hover {
+  opacity: 1;
+}
+
+.volumeContainer {
+  display: flex;
+  align-items: center;
+}
+
+.volumeSlider {
+  width: 0;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: width 150ms ease-in-out, transform 150ms ease-in-out;
+}
+
+.volumeContainer:hover .volumeSlider,
+.volumeSlider:focus-within {
+  width: 100px;
+  transform: scaleX(1);
+
+  @media(max-width: 500px) {
+    width: 40px;
+  }
+}
+
+.durationContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-grow: 1;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+.timelineContainer {
+  height: 7px;
+  margin-inline: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.timeline {
+  background-color: rgba(100, 100, 100, 0.5);
+  height: 3px;
+  width: 100%;
+  position: relative;
+}
+
+.timelineOverlay {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: calc(100% - var(--progress-position) * 100%);
+  background-color: red;
+}
+
+.timeline .thumbIndicator {
+  --scale: 1;
+  position: absolute;
+  transform: translateX(-50%) scale(var(--scale));
+  height: 200%;
+  top: -50%;
+  left: 0%;
+  background-color: red;
+  border-radius: 50%;
+  transition: transform 150ms ease-in-out;
+  aspect-ratio: 1 / 1;
+}
+
+.timelineContainer:hover .timeline::before {
+  display: block;
+}
+
+.timelineContainer:hover .thumbIndicator {
+  --scale: 1;
+}
+
+.timelineContainer:hover .timeline {
+  height: 100%;
+}
